@@ -58,7 +58,7 @@ func (webserver *WebServer) handleWriteBlock(w http.ResponseWriter, r *http.Requ
 
 	defer r.Body.Close()
 
-	newBlock, err := webserver.Blockchain.GenerateBlock(webserver.Blockchain.Chain[len(webserver.Blockchain.Chain) - 1], m.BPM)
+	newBlock, err := webserver.Blockchain.GenerateBlock( m.BPM)
 	if err != nil {
 		webserver.responseWithJSON(w, r, http.StatusInternalServerError, m)
 		return

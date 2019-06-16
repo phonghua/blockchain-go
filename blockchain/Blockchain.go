@@ -16,9 +16,7 @@ func NewBlockchain() *Blockchain {
 		Chain: []Block{},
 	}
 
-	newBlock, _ := blockChain.generateRoot()
-
-	// newBlockchain := append(webserver.Blockchain.Chain, newBlock)
+	newBlock, _ := blockChain.genesis()
 	newChain := append(blockChain.Chain, newBlock)
 	blockChain.ReplaceChain(newChain)
 
@@ -35,7 +33,7 @@ func (blockchain *Blockchain) CalculateHash(block Block) string {
 	return hex.EncodeToString(hashed)
 }
 
-func (blockchain *Blockchain) generateRoot() (Block, error){
+func (blockchain *Blockchain) genesis() (Block, error){
 	var newBlock Block
 
 	t := time.Now()
@@ -48,7 +46,8 @@ func (blockchain *Blockchain) generateRoot() (Block, error){
 	return newBlock, nil
 }
 
-func (blockchain *Blockchain) GenerateBlock(oldBlock Block, BMP int) (Block, error){
+func (blockchain *Blockchain) GenerateBlock(BMP int) (Block, error){
+	oldBlock := blockchain.Chain[len(blockchain.Chain ) - 1]
 	var newBlock Block
 
 	t := time.Now()
@@ -58,6 +57,7 @@ func (blockchain *Blockchain) GenerateBlock(oldBlock Block, BMP int) (Block, err
 	newBlock.BMP = BMP
 	newBlock.PrevHash = oldBlock.Hash
 	newBlock.Hash = blockchain.CalculateHash(newBlock)
+
 	return newBlock, nil
 }
 
